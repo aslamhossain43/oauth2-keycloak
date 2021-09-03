@@ -1,0 +1,27 @@
+server:
+  port: 8180
+spring:
+  security:
+    oauth2:
+      host:
+        keycloak:
+          url: http://localhost:8888/auth
+          realm: master
+          client-id: trakti-client
+          client-secret: 0761563c-3e3d-48f4-bda8-5fe51a7ba2ef
+          username: admin
+          password: admin
+      client:
+        provider:
+          oidc:
+            jwk-set-uri: http://localhost:8888/auth/realms/trakti/protocol/openid-connect/certs
+            issuer-uri: http://localhost:8888/auth/realms/trakti
+        registration:
+          oidc:
+            client-id: trakti-client
+            client-secret: 0761563c-3e3d-48f4-bda8-5fe51a7ba2ef
+      resource:
+        filter-order: 3
+        
+        
+      
