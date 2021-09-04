@@ -7,11 +7,9 @@ spring:
       host:
         keycloak:
           url: http://localhost:8888/auth
-          realm: master
+          realm: trakti
           client-id: trakti-client
           client-secret: 3b87f36f-e960-45a0-9ddf-40fac5450b0a
-          username: admin
-          password: admin
       client:
         provider:
           oidc:

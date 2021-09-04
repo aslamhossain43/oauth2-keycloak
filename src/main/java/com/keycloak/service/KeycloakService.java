@@ -5,12 +5,16 @@ import java.util.Set;
 import org.keycloak.representations.idm.UserRepresentation;
 
 /**
- * Service Interface for managing {@link QcAgent}.
+ *
+ * @author Md. Aslam Hossain
+ * @version 05/09/2021
+ *
  */
 public interface KeycloakService {
 	Set<UserRepresentation> getAllEnabledUsers();
 
-	UserRepresentation getKeycloakUserByUserId(String id);
-
 	Set<UserRepresentation> getAllEnabledAdmins();
+
+	UserRepresentation getKeycloakAdminUserId(String id);
+
 }

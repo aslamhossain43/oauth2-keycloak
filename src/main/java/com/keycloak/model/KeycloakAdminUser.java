@@ -6,10 +6,13 @@ import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 
 /**
- * A user.
+ *
+ * @author Md. Aslam Hossain
+ * @version 05/09/2021
+ *
  */
 @Node
-public class KeycloakUser {
+public class KeycloakAdminUser {
 
 	@Id
 	private String id = UUID.randomUUID().toString();

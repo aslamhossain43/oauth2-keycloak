@@ -1,4 +1,4 @@
-package com.keycloak.config;
+package com.keycloak.security;
 
 import java.util.Collection;
 import java.util.List;
@@ -10,6 +10,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 
+/**
+ *
+ * @author Md. Aslam Hossain
+ * @version 05/09/2021
+ *
+ */
 public class KeycloakRealmRoleConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
 	@SuppressWarnings("unchecked")
 	@Override

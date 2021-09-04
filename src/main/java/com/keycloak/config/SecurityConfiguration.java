@@ -1,6 +1,6 @@
 package com.keycloak.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -12,16 +12,24 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 
+import com.keycloak.security.KeycloakRealmRoleConverter;
+import com.keycloak.util.keycloak.KeycloakAdapter;
+
+/**
+ *
+ * @author Md. Aslam Hossain
+ * @version 05/09/2021
+ *
+ */
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	@Value("${spring.security.oauth2.client.provider.oidc.jwk-set-uri}")
-	private String jwkSetUri;
+	@Autowired
+	KeycloakAdapter keycloakAdapter;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/keycloak/user").hasAuthority("ROLE_USER").antMatchers("/keycloak/admin")
-				.hasAuthority("ROLE_ADMIN").antMatchers("/keycloak/sync").hasAuthority("ROLE_ADMIN").antMatchers("/**")
+		http.authorizeRequests().antMatchers("/keycloak/**").hasAuthority("ROLE_ADMIN").antMatchers("/**")
 				.authenticated().and().oauth2ResourceServer().jwt()
 				.jwtAuthenticationConverter(authenticationConverter()).and().and().oauth2Client();
 
@@ -35,7 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	JwtDecoder jwtDecoder() {
-		return NimbusJwtDecoder.withJwkSetUri(this.jwkSetUri).build();
+		return NimbusJwtDecoder.withJwkSetUri(keycloakAdapter.getJwkSetUri()).build();
 	}
 
 }

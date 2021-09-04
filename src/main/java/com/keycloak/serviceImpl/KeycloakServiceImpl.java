@@ -14,8 +14,11 @@ import com.keycloak.service.KeycloakService;
 import com.keycloak.util.keycloak.KeycloakAdapter;
 
 /**
- * Service Implementation for managing {@link QcAgent}.
- */
+*
+* @author Md. Aslam Hossain
+* @version 05/09/2021
+*
+*/
 @Service
 public class KeycloakServiceImpl implements KeycloakService {
 
@@ -29,30 +32,31 @@ public class KeycloakServiceImpl implements KeycloakService {
 
 	@Override
 	public Set<UserRepresentation> getAllEnabledUsers() {
-		LOGGER.info("Enter getAllEnabledUsers() in KeycloakUserServiceImpl class");
+		LOGGER.info("Enter getAllEnabledUsers() in KeycloakServiceImpl class");
 		Keycloak keycloak = keycloakAdapter.createKeycloakBuilder();
 		keycloak.tokenManager().getAccessToken();
-		Set<UserRepresentation> userRepresentations = keycloak.realm("trakti").roles().get("user").getRoleUserMembers()
-				.stream().filter(u -> u.isEnabled()).collect(Collectors.toSet());
+		Set<UserRepresentation> userRepresentations = keycloak.realm(keycloakAdapter.getRealm()).roles().get("USER")
+				.getRoleUserMembers().stream().filter(u -> u.isEnabled()).collect(Collectors.toSet());
 		return userRepresentations;
 	}
 
 	@Override
 	public Set<UserRepresentation> getAllEnabledAdmins() {
-		LOGGER.info("Enter getAllEnabledAdmins() in KeycloakUserServiceImpl class");
+		LOGGER.info("Enter getAllEnabledAdmins() in KeycloakServiceImpl class");
 		Keycloak keycloak = keycloakAdapter.createKeycloakBuilder();
 		keycloak.tokenManager().getAccessToken();
-		Set<UserRepresentation> userRepresentations = keycloak.realm("trakti").roles().get("admin").getRoleUserMembers()
-				.stream().filter(u -> u.isEnabled()).collect(Collectors.toSet());
+		Set<UserRepresentation> userRepresentations = keycloak.realm(keycloakAdapter.getRealm()).roles().get("ADMIN")
+				.getRoleUserMembers().stream().filter(u -> u.isEnabled()).collect(Collectors.toSet());
 		return userRepresentations;
 	}
 
 	@Override
-	public UserRepresentation getKeycloakUserByUserId(String id) {
-		LOGGER.info("Enter getKeycloakUserByUserId() in KeycloakUserServiceImpl class");
+	public UserRepresentation getKeycloakAdminUserId(String id) {
+		LOGGER.info("Enter getKeycloakUserByUserId() in KeycloakServiceImpl class");
 		Keycloak keycloak = keycloakAdapter.createKeycloakBuilder();
 		keycloak.tokenManager().getAccessToken();
-		UserRepresentation userRepresentation = keycloak.realm("trakti").users().get(id).toRepresentation();
+		UserRepresentation userRepresentation = keycloak.realm(keycloakAdapter.getRealm()).users().get(id)
+				.toRepresentation();
 		return userRepresentation;
 	}
 }
