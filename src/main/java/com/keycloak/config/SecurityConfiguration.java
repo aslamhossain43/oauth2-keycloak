@@ -7,7 +7,6 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -21,19 +20,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http
-		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		.and()
-		.authorizeRequests()
-		.antMatchers("/user/**").hasAuthority("ROLE_USER")
-		.antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-		.antMatchers("/home/hello").permitAll()
-		.antMatchers("/**").authenticated()
-		.and()
-		.oauth2ResourceServer().jwt().jwtAuthenticationConverter(authenticationConverter())
-		.and()
-		.and()
-		.oauth2Client();
+		http.authorizeRequests().antMatchers("/keycloak/user").hasAuthority("ROLE_USER").antMatchers("/keycloak/admin")
+				.hasAuthority("ROLE_ADMIN").antMatchers("/keycloak/sync").hasAuthority("ROLE_ADMIN").antMatchers("/**")
+				.authenticated().and().oauth2ResourceServer().jwt()
+				.jwtAuthenticationConverter(authenticationConverter()).and().and().oauth2Client();
 
 	}
 
